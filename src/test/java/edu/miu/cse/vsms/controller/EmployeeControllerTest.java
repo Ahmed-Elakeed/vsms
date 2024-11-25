@@ -1,8 +1,9 @@
 package edu.miu.cse.vsms.controller;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import edu.miu.cse.vsms.dto.request.EmployeeRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,9 @@ public class EmployeeControllerTest {
     public void testAddEmployeeEndpoint() throws Exception {
         EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto("Ahmed","elakeed@gmail.com","+1 (563) 286-2534", LocalDate.now());
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         String request = objectMapper.writeValueAsString(employeeRequestDto);
-        this.mockMvc.perform(post("/api/v1/employee")
+        this.mockMvc.perform(post("/api/v1/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
                 .andExpect(MockMvcResultMatchers.status().is(201))
